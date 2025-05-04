@@ -18,12 +18,270 @@
     .box-status { padding: 1rem; border-radius: 10px; margin-bottom: 1rem; color: white; }
     .status-hijau { background-color: #28a745; }
     .status-kuning { background-color: #ffc107; color: black; }
-    .status-merah { background-color: #dc3545; }
+   .status-merah { background-color: #dc3545; }
+   #loginPopup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#loginPopup .box {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  width: 100%;
+  max-width: 400px;
+}
+#userInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
   </style>
+  <style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Pengaturan untuk Login Popup */
+  #loginPopup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #loginPopup .box {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+
+  .form-control, .form-select {
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+  }
+
+  #loginWarning {
+    color: #e74c3c;
+    margin-bottom: 15px;
+    font-size: 0.875rem;
+    display: none;
+  }
+
+  h4, h5, h2 {
+    color: #333;
+  }
+
+  /* Tombol */
+  .btn {
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  .btn-primary {
+    background-color: #3498db;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #2980b9;
+  }
+
+  .btn-outline-danger {
+    border-color: #e74c3c;
+    color: #e74c3c;
+  }
+
+  .btn-outline-danger:hover {
+    background-color: #e74c3c;
+    color: white;
+  }
+
+  .btn-success {
+    background-color: #2ecc71;
+    border: none;
+  }
+
+  /* Box Status */
+  .box-status {
+    padding: 1.2rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .status-hijau {
+    background-color: #28a745;
+  }
+
+  .status-kuning {
+    background-color: #ffc107;
+    color: black;
+  }
+
+  .status-merah {
+    background-color: #dc3545;
+  }
+
+  /* Responsif */
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+
+    #loginPopup .box {
+      padding: 1.5rem;
+    }
+
+    .form-control, .form-select {
+      font-size: 0.9rem;
+      padding: 8px;
+    }
+
+    .btn {
+      font-size: 0.9rem;
+      padding: 10px 16px;
+    }
+
+    .box-status {
+      padding: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .form-control, .form-select {
+      font-size: 0.85rem;
+      padding: 6px;
+    }
+
+    .btn {
+      font-size: 0.85rem;
+      padding: 8px 14px;
+    }
+  }
+
+  /* Header dan Footer untuk tampilan modern */
+  header, footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  header h1, footer p {
+    margin: 0;
+  }
+
+  .container {
+    margin-top: 2rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .mb-4 {
+    margin-bottom: 2rem;
+  }
+
+  .text-muted {
+    color: #6c757d;
+  }
+
+  /* Login Button */
+  #loginPopup button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+
+  #loginPopup button:hover {
+    background-color: #2980b9;
+  }
+
+  /* Daftar Riwayat */
+  .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  .list-group-item:hover {
+    background-color: #f1f1f1;
+  }
+
+  .list-group-item button {
+    font-size: 0.8rem;
+  }
+  #userGreeting {
+  color: #3498db !important;
+}
+</style>
 </head>
-<body class="bg-light p-4">
+	    <div id="loginPopup">
+      <div class="box">
+        <h4 class="mb-3">Masukkan Nama Customer</h4>
+        <input type="text" id="loginUsername" class="form-control mb-2" placeholder="Nama Customer" />
+        <div id="loginWarning" class="text-danger mb-3" style="display: none;">Nama harus diisi</div>
+        <button onclick="login()" class="btn btn-primary w-100">Lanjut</button>
+      </div>
+    </div>
+<body class="bg-light">
+  <header>
+    <h1>Status Servis Motor</h1>
+  </header>
+
   <div class="container">
-    <h2 class="mb-4">Cek Status Servis Motor</h2>
+    <div id="userInfo" style="display: none;">
+      <span id="userGreeting" class="text-muted"></span>
+      <button onclick="logout()" class="btn btn-sm btn-outline-danger">Logout</button>
+    </div>
 
     <div class="mb-3">
       <label class="form-label">Nama Motor</label>
@@ -72,9 +330,15 @@
         <button onclick="simpanServis()" class="btn btn-success w-100">Simpan</button>
       </div>
     </div>
+
     <h5 class="mt-4">Riwayat Servis</h5>
     <ul id="riwayatList" class="list-group mt-2"></ul>
   </div>
+
+  <footer>
+    <p>&copy; 2025 Servis Motor App</p>
+  </footer>
+</body>
 <script>
   const firebaseConfig = {
   apiKey: "AIzaSyC83eiMPIcbF3zkS5s3GENNm0eSOy6sti0",
@@ -178,16 +442,17 @@ const analytics = firebase.analytics();
     });
 }
 function tampilRiwayat() {
+  if (!currentUsername) return;
+
+  const dbRef = firebase.database().ref(`users/${currentUsername}/riwayat`);
   const list = document.getElementById('riwayatList');
   list.innerHTML = "";
 
-  db.ref('riwayatServis').once('value', (snapshot) => {
+  dbRef.once('value', snapshot => {
+    if (!snapshot.exists()) return;
+
     const data = snapshot.val();
-    if (!data) return;
-
-    const items = Object.entries(data).reverse();
-
-    items.forEach(([key, item], idx) => {
+    Object.entries(data).reverse().forEach(([key, item]) => {
       const li = document.createElement('li');
       li.className = 'list-group-item d-flex justify-content-between align-items-center';
       li.innerHTML = `
@@ -202,13 +467,9 @@ function tampilRiwayat() {
   });
 }
 
-    function hapusRiwayat(key) {
-  db.ref('riwayatServis/' + key).remove()
-    .then(() => tampilRiwayat())
-    .catch(error => {
-      console.error("Gagal hapus:", error);
-      Swal.fire("Error", "Gagal menghapus data.", "error");
-    });
+function hapusRiwayat(key) {
+  const dbRef = firebase.database().ref(`users/${currentUsername}/riwayat/${key}`);
+  dbRef.remove().then(tampilRiwayat);
 }
 
     function cekStatus() {
@@ -276,5 +537,85 @@ function tampilRiwayat() {
 
     window.addEventListener("load", tampilRiwayat);
   </script>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const storedUsername = localStorage.getItem('username');
+  if (storedUsername) {
+    currentUsername = storedUsername;
+    showMainUI();
+  } else {
+    showLoginPopup();
+  }
+});
+
+function showMainUI() {
+  document.getElementById('loginPopup').style.display = 'none';
+  document.getElementById('userInfo').style.display = 'flex';
+  document.getElementById('userGreeting').textContent = `Hai, ${currentUsername}`;
+  tampilRiwayat();
+}
+
+function showLoginPopup() {
+  document.getElementById('loginPopup').style.display = 'flex';
+  document.getElementById('userInfo').style.display = 'none';
+}
+  </script>
+  <script>
+let currentUsername = "";
+
+function login() {
+  const username = document.getElementById('loginUsername').value.trim();
+  const warning = document.getElementById('loginWarning');
+
+  if (!username) {
+    warning.style.display = 'block';
+    return;
+  }
+
+  warning.style.display = 'none';
+  currentUsername = username;
+  localStorage.setItem('username', username);
+  showMainUI();
+}
+
+function logout() {
+  Swal.fire({
+    title: 'Nek metu metu, nek gak gak!',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Iyo',
+    cancelButtonText: 'Gak'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      localStorage.removeItem('username');
+      currentUsername = "";
+      showLoginPopup();
+    }
+  });
+}
+function showMainUI() {
+  document.getElementById('loginPopup').style.display = 'none';
+  document.getElementById('userInfo').style.display = 'flex';
+  document.querySelector('.container').style.display = 'block';
+  document.getElementById('userGreeting').textContent = `Halo, ${currentUsername}`;
+}
+
+function showLoginPopup() {
+  document.getElementById('loginPopup').style.display = 'flex';
+  document.getElementById('userInfo').style.display = 'none';
+  document.querySelector('.container').style.display = 'none';
+}
+
+// Saat load halaman
+window.onload = function() {
+  const storedUser = localStorage.getItem('username');
+  if (storedUser) {
+    currentUsername = storedUser;
+    showMainUI();
+  } else {
+    showLoginPopup();
+  }
+};
+</script>
 </body>
 </html>
