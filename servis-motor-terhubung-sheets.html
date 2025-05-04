@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Status Servis Motor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Firebase App -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<!-- Firebase Auth -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+<!-- Firebase Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+<!-- Firebase Analytics (opsional) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js"></script>
+  <style>
+    .box-status { padding: 1rem; border-radius: 10px; margin-bottom: 1rem; color: white; }
+    .status-hijau { background-color: #28a745; }
+    .status-kuning { background-color: #ffc107; color: black; }
+    .status-merah { background-color: #dc3545; }
+  </style>
+</head>
+<body class="bg-light p-4">
+  <div class="container">
+    <h2 class="mb-4">Cek Status Servis Motor</h2>
+
+    <div class="mb-3">
+      <label class="form-label">Nama Motor</label>
+      <input type="text" id="namaMotor" class="form-control" placeholder="Contoh: Filano, Astrea" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Jenis Motor</label>
+      <select id="jenisMotor" class="form-select">
+        <option value="">Pilih Jenis</option>
+        <option value="matic">Matic</option>
+        <option value="bebek">Bebek</option>
+        <option value="sport">Sport</option>
+        <option value="lainnya">Lainnya</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">KM Sekarang</label>
+      <input type="number" id="kmNow" class="form-control" placeholder="Masukkan KM sekarang" />
+    </div>
+    <button onclick="cekStatus()" class="btn btn-primary mb-4">Cek Status</button>
+
+    <div id="statusContainer"></div>
+
+    <hr />
+    <h4>Tambah Riwayat Servis</h4>
+    <div class="row g-2">
+      <div class="col-md-4">
+        <select id="part" class="form-select">
+          <option value="">Pilih Part</option>
+          <option value="oli">Oli</option>
+          <option value="vanbelt">Vanbelt</option>
+          <option value="busi">Busi</option>
+          <option value="filter udara">Filter Udara</option>
+          <option value="rem">Rem</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <input type="number" id="kmServis" class="form-control" placeholder="KM Servis" />
+      </div>
+      <div class="col-md-3">
+        <input type="date" id="tglServis" class="form-control" />
+      </div>
+      <div class="col-md-2">
+        <button onclick="simpanServis()" class="btn btn-success w-100">Simpan</button>
+      </div>
+    </div>
+    <h5 class="mt-4">Riwayat Servis</h5>
+    <ul id="riwayatList" class="list-group mt-2"></ul>
+  </div>
+<script>
+  const firebaseConfig = {
+  apiKey: "AIzaSyC83eiMPIcbF3zkS5s3GENNm0eSOy6sti0",
+  authDomain: "servis-motor-6ef84.firebaseapp.com",
+  databaseURL: "https://servis-motor-6ef84-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "servis-motor-6ef84",
+  storageBucket: "servis-motor-6ef84.appspot.com",
+  messagingSenderId: "557852805723",
+  appId: "1:557852805723:web:8c62aabf63479a290a8d7e",
+  measurementId: "G-5FECGWS52S"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+const analytics = firebase.analytics();
+</script>
+  <script>
+    const intervalPart = {
+      'oli': 2000,
+      'vanbelt': 10000,
+      'busi': 8000,
+      'filter udara': 12000,
+      'rem': 4000
+    };
+
+    function getInterval(part) {
+      const nama = part.toLowerCase();
+      return intervalPart[nama] || 5000;
+    }
+
+    function simpanServis() {
+      const part = document.getElementById('part').value.trim();
+      const kmValue = document.getElementById('kmServis').value;
+      const tanggal = document.getElementById('tglServis').value;
+      const namaMotor = document.getElementById('namaMotor').value.trim();
+      const jenisMotor = document.getElementById('jenisMotor').value;
+
+      const km = parseInt(kmValue);
+
+      if (!part || isNaN(km) || !tanggal || !namaMotor || !jenisMotor) {
+        Swal.fire("Lengkapi semua data!", "", "warning");
+        return;
+      }
+
+      let data = JSON.parse(localStorage.getItem("riwayatServis")) || [];
+
+      data = data.filter(item =>
+        item.part && item.km && item.tanggal && item.namaMotor && item.jenisMotor
+      );
+
+      const entriesForThisMotor = data.filter(item =>
+        item.namaMotor === namaMotor && item.jenisMotor === jenisMotor
+      );
+
+      if (entriesForThisMotor.length >= 12) {
+        const indexToRemove = data.findIndex(item =>
+          item.namaMotor === namaMotor && item.jenisMotor === jenisMotor
+        );
+        if (indexToRemove !== -1) {
+          data.splice(indexToRemove, 1);
+        }
+      }
+
+      const entry = { part, km, tanggal, namaMotor, jenisMotor };
+      data.push(entry);
+      localStorage.setItem("riwayatServis", JSON.stringify(data));
+      Swal.fire("Tersimpan", "Riwayat servis berhasil disimpan.", "success");
+
+      function simpanServis() {
+  const part = document.getElementById('part').value.trim();
+  const kmValue = document.getElementById('kmServis').value;
+  const tanggal = document.getElementById('tglServis').value;
+  const namaMotor = document.getElementById('namaMotor').value.trim();
+  const jenisMotor = document.getElementById('jenisMotor').value;
+  const km = parseInt(kmValue);
+
+  if (!part || isNaN(km) || !tanggal || !namaMotor || !jenisMotor) {
+    Swal.fire("Lengkapi semua data!", "", "warning");
+    return;
+  }
+
+  const entry = { part, km, tanggal, namaMotor, jenisMotor };
+
+  // Simpan ke Firebase
+  const servisRef = db.ref('riwayatServis').push();
+  servisRef.set(entry)
+    .then(() => {
+      Swal.fire("Tersimpan", "Riwayat servis berhasil disimpan ke Firebase.", "success");
+
+      // Reset input
+      document.getElementById('part').value = '';
+      document.getElementById('kmServis').value = '';
+      document.getElementById('tglServis').value = '';
+
+      tampilRiwayat();
+    })
+    .catch(error => {
+      console.error("Gagal simpan:", error);
+      Swal.fire("Error", "Gagal menyimpan data ke Firebase.", "error");
+    });
+}
+function tampilRiwayat() {
+  const list = document.getElementById('riwayatList');
+  list.innerHTML = "";
+
+  db.ref('riwayatServis').once('value', (snapshot) => {
+    const data = snapshot.val();
+    if (!data) return;
+
+    const items = Object.entries(data).reverse();
+
+    items.forEach(([key, item], idx) => {
+      const li = document.createElement('li');
+      li.className = 'list-group-item d-flex justify-content-between align-items-center';
+      li.innerHTML = `
+        <div>
+          <strong>${item.part.toUpperCase()}</strong> - KM ${item.km} - ${item.tanggal}<br>
+          <small>${item.namaMotor} (${item.jenisMotor})</small>
+        </div>
+        <button class="btn btn-sm btn-danger" onclick="hapusRiwayat('${key}')">Hapus</button>
+      `;
+      list.appendChild(li);
+    });
+  });
+}
+
+    function hapusRiwayat(key) {
+  db.ref('riwayatServis/' + key).remove()
+    .then(() => tampilRiwayat())
+    .catch(error => {
+      console.error("Gagal hapus:", error);
+      Swal.fire("Error", "Gagal menghapus data.", "error");
+    });
+}
+
+    function cekStatus() {
+  const kmNow = parseInt(document.getElementById('kmNow').value);
+  const namaMotor = document.getElementById('namaMotor').value.trim();
+  const jenisMotor = document.getElementById('jenisMotor').value;
+
+  if (isNaN(kmNow) || !namaMotor || !jenisMotor) {
+    Swal.fire("Lengkapi semua data!", "", "warning");
+    return;
+  }
+
+  const statusContainer = document.getElementById('statusContainer');
+  statusContainer.innerHTML = `<h5>Motor: ${namaMotor} (${jenisMotor})</h5><hr>`;
+
+  db.ref('riwayatServis').once('value', (snapshot) => {
+    const allData = snapshot.val();
+    if (!allData) return;
+
+    const relevantData = Object.values(allData).filter(item =>
+      item.namaMotor === namaMotor && item.jenisMotor === jenisMotor
+    );
+
+    const partMap = {};
+
+    relevantData.forEach(item => {
+      const key = item.part.toLowerCase();
+      const existing = partMap[key];
+
+      if (!existing || new Date(item.tanggal) > new Date(existing.tanggal)) {
+        partMap[key] = item;
+      }
+    });
+
+    Object.keys(partMap).forEach(part => {
+      const item = partMap[part];
+      const interval = getInterval(item.part);
+      const kmBerikutnya = item.km + interval;
+      const sisa = kmBerikutnya - kmNow;
+
+      let status = '';
+      let kelas = '';
+      if (sisa <= 340) {
+        status = 'Saatnya servis';
+        kelas = 'status-merah';
+      } else if (sisa <= 680) {
+        status = 'Mendekati servis';
+        kelas = 'status-kuning';
+      } else {
+        status = 'Masih aman';
+        kelas = 'status-hijau';
+      }
+
+      const div = document.createElement('div');
+      div.className = `box-status ${kelas}`;
+      div.innerHTML = `
+        <strong>${item.part.toUpperCase()}</strong><br>
+        Terakhir di KM ${item.km}, berikutnya di KM ${kmBerikutnya}<br>
+        Status: <strong>${status}</strong>
+      `;
+      statusContainer.appendChild(div);
+    });
+  });
+}
+
+    window.addEventListener("load", tampilRiwayat);
+  </script>
+</body>
+</html>
