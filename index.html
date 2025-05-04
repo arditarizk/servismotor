@@ -265,13 +265,16 @@
 </style>
 </head>
 	    <div id="loginPopup">
-      <div class="box">
-        <h4 class="mb-3">Masukkan Nama Customer</h4>
-        <input type="text" id="loginUsername" class="form-control mb-2" placeholder="Nama Customer" />
-        <div id="loginWarning" class="text-danger mb-3" style="display: none;">Nama harus diisi</div>
-        <button onclick="login()" class="btn btn-primary w-100">Lanjut</button>
-      </div>
+  <div class="box">
+    <h4 class="mb-3">Masukkan Nama Customer</h4>
+    <div class="input-group mb-2">
+      <span class="input-group-text">@</span>
+      <input type="text" id="loginUsername" class="form-control" placeholder="Nama Customer" />
     </div>
+    <div id="loginWarning" class="text-danger mb-3" style="display: none;"></div>
+    <button onclick="login()" class="btn btn-primary w-100">Lanjut</button>
+  </div>
+</div>
 <body class="bg-light">
   <header>
     <h1>Status Servis Motor</h1>
@@ -564,13 +567,44 @@ function showLoginPopup() {
 let currentUsername = "";
 
 function login() {
-  const username = document.getElementById('loginUsername').value.trim();
-  const warning = document.getElementById('loginWarning');
+  const inputName = document.getElementById("loginUsername").value.trim();
+  const warning = document.getElementById("loginWarning");
 
-  if (!username) {
-    warning.style.display = 'block';
+  // Validasi input (hanya huruf dan angka, panjang 6–21 termasuk @)
+  if (!/^[a-zA-Z0-9]{5,20}$/.test(inputName)) {
+    warning.innerText = "Nama harus huruf/angka (tanpa simbol), 5–20 karakter.";
+    warning.style.display = "block";
     return;
   }
+
+  const username = "@" + inputName;
+  const localUser = localStorage.getItem("username");
+
+  // Cek ke Firebase apakah nama sudah dipakai
+  firebase.database().ref("users").orderByChild("username").equalTo(username).once("value")
+    .then(snapshot => {
+      if (snapshot.exists()) {
+        // Kalau user lama (sudah login sebelumnya), boleh lanjut
+        if (localUser === username) {
+          lanjutkanLogin(username);
+        } else {
+          warning.innerText = "Nama sudah digunakan. Silakan pilih nama lain.";
+          warning.style.display = "block";
+        }
+      } else {
+        // Simpan ke Firebase dan localStorage
+        firebase.database().ref("users").push({ username });
+        localStorage.setItem("username", username);
+        lanjutkanLogin(username);
+      }
+    });
+}
+
+function lanjutkanLogin(username) {
+  document.getElementById("loginWarning").style.display = "none";
+  Swal.fire("Berhasil", `Login sebagai ${username}`, "success");
+  document.getElementById("loginPopup").style.display = "none";
+}
 
   warning.style.display = 'none';
   currentUsername = username;
