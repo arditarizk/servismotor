@@ -7,274 +7,47 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Firebase App -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<!-- Firebase Auth -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-<!-- Firebase Realtime Database -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
-<!-- Firebase Analytics (opsional) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <!-- Firebase Auth -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+  <!-- Firebase Realtime Database -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+  <!-- Firebase Analytics (opsional) -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js"></script>
+
   <style>
     .box-status { padding: 1rem; border-radius: 10px; margin-bottom: 1rem; color: white; }
     .status-hijau { background-color: #28a745; }
     .status-kuning { background-color: #ffc107; color: black; }
-   .status-merah { background-color: #dc3545; }
-   #loginPopup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  backdrop-filter: blur(5px);
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#loginPopup .box {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  width: 100%;
-  max-width: 400px;
-}
-#userInfo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-  </style>
-  <style>
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  /* Pengaturan untuk Login Popup */
-  #loginPopup {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    backdrop-filter: blur(5px);
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #loginPopup .box {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-  }
-
-  .form-control, .form-select {
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 1rem;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-
-  .form-control:focus, .form-select:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-  }
-
-  #loginWarning {
-    color: #e74c3c;
-    margin-bottom: 15px;
-    font-size: 0.875rem;
-    display: none;
-  }
-
-  h4, h5, h2 {
-    color: #333;
-  }
-
-  /* Tombol */
-  .btn {
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-size: 1rem;
-    text-transform: uppercase;
-    font-weight: bold;
-  }
-
-  .btn-primary {
-    background-color: #3498db;
-    border: none;
-    transition: background-color 0.3s ease;
-  }
-
-  .btn-primary:hover {
-    background-color: #2980b9;
-  }
-
-  .btn-outline-danger {
-    border-color: #e74c3c;
-    color: #e74c3c;
-  }
-
-  .btn-outline-danger:hover {
-    background-color: #e74c3c;
-    color: white;
-  }
-
-  .btn-success {
-    background-color: #2ecc71;
-    border: none;
-  }
-
-  /* Box Status */
-  .box-status {
-    padding: 1.2rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-
-  .status-hijau {
-    background-color: #28a745;
-  }
-
-  .status-kuning {
-    background-color: #ffc107;
-    color: black;
-  }
-
-  .status-merah {
-    background-color: #dc3545;
-  }
-
-  /* Responsif */
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
+    .status-merah { background-color: #dc3545; }
+    #loginPopup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
     #loginPopup .box {
-      padding: 1.5rem;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 400px;
     }
-
-    .form-control, .form-select {
-      font-size: 0.9rem;
-      padding: 8px;
+    #userInfo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
     }
-
-    .btn {
-      font-size: 0.9rem;
-      padding: 10px 16px;
-    }
-
-    .box-status {
-      padding: 1rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    h2 {
-      font-size: 1.5rem;
-    }
-
-    .form-control, .form-select {
-      font-size: 0.85rem;
-      padding: 6px;
-    }
-
-    .btn {
-      font-size: 0.85rem;
-      padding: 8px 14px;
-    }
-  }
-
-  /* Header dan Footer untuk tampilan modern */
-  header, footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 1rem;
-  }
-
-  header h1, footer p {
-    margin: 0;
-  }
-
-  .container {
-    margin-top: 2rem;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .mb-4 {
-    margin-bottom: 2rem;
-  }
-
-  .text-muted {
-    color: #6c757d;
-  }
-
-  /* Login Button */
-  #loginPopup button {
-    width: 100%;
-    padding: 12px;
-    background-color: #3498db;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    color: white;
-    transition: background-color 0.3s ease;
-  }
-
-  #loginPopup button:hover {
-    background-color: #2980b9;
-  }
-
-  /* Daftar Riwayat */
-  .list-group-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    margin-bottom: 10px;
-  }
-
-  .list-group-item:hover {
-    background-color: #f1f1f1;
-  }
-
-  .list-group-item button {
-    font-size: 0.8rem;
-  }
-  #userGreeting {
-  color: #3498db !important;
-}
-</style>
+  </style>
 </head>
-	    <div id="loginPopup">
-  <div class="box">
-    <h4 class="mb-3">Masukkan Nama Customer</h4>
-    <div class="input-group mb-2">
-      <span class="input-group-text">@</span>
-      <input type="text" id="loginUsername" class="form-control" placeholder="Nama Customer" />
-    </div>
-    <div id="loginWarning" class="text-danger mb-3" style="display: none;"></div>
-    <button onclick="login()" class="btn btn-primary w-100">Lanjut</button>
-  </div>
-</div>
+
 <body class="bg-light">
   <header>
     <h1>Status Servis Motor</h1>
@@ -341,321 +114,111 @@
   <footer>
     <p>&copy; 2025 Servis Motor App</p>
   </footer>
-</body>
-<script>
-  const firebaseConfig = {
-  apiKey: "AIzaSyC83eiMPIcbF3zkS5s3GENNm0eSOy6sti0",
-  authDomain: "servis-motor-6ef84.firebaseapp.com",
-  databaseURL: "https://servis-motor-6ef84-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "servis-motor-6ef84",
-  storageBucket: "servis-motor-6ef84.appspot.com",
-  messagingSenderId: "557852805723",
-  appId: "1:557852805723:web:8c62aabf63479a290a8d7e",
-  measurementId: "G-5FECGWS52S"
-};
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
-const analytics = firebase.analytics();
-</script>
+  <div id="loginPopup">
+    <div class="box">
+      <h4 class="mb-3">Masukkan Nama Customer</h4>
+      <div class="input-group mb-2">
+        <span class="input-group-text">@</span>
+        <input type="text" id="loginUsername" class="form-control" placeholder="Nama Customer" />
+      </div>
+      <div id="loginWarning" class="text-danger mb-3" style="display: none;"></div>
+      <button onclick="login()" class="btn btn-primary w-100">Lanjut</button>
+    </div>
+  </div>
+
   <script>
-    const intervalPart = {
-      'oli': 2000,
-      'vanbelt': 10000,
-      'busi': 8000,
-      'filter udara': 12000,
-      'rem': 4000
+    const firebaseConfig = {
+      apiKey: "AIzaSyC83eiMPIcbF3zkS5s3GENNm0eSOy6sti0",
+      authDomain: "servis-motor-6ef84.firebaseapp.com",
+      databaseURL: "https://servis-motor-6ef84-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "servis-motor-6ef84",
+      storageBucket: "servis-motor-6ef84.appspot.com",
+      messagingSenderId: "557852805723",
+      appId: "1:557852805723:web:8c62aabf63479a290a8d7e",
+      measurementId: "G-5FECGWS52S"
     };
 
-    function getInterval(part) {
-      const nama = part.toLowerCase();
-      return intervalPart[nama] || 5000;
-    }
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
 
-    function simpanServis() {
-      const part = document.getElementById('part').value.trim();
-      const kmValue = document.getElementById('kmServis').value;
-      const tanggal = document.getElementById('tglServis').value;
-      const namaMotor = document.getElementById('namaMotor').value.trim();
-      const jenisMotor = document.getElementById('jenisMotor').value;
+    let currentUsername = "";
 
-      const km = parseInt(kmValue);
+    document.addEventListener("DOMContentLoaded", () => {
+      const storedUsername = localStorage.getItem('username');
+      if (storedUsername) {
+        currentUsername = storedUsername;
+        showMainUI();
+      } else {
+        showLoginPopup();
+      }
+    });
 
-      if (!part || isNaN(km) || !tanggal || !namaMotor || !jenisMotor) {
-        Swal.fire("Lengkapi semua data!", "", "warning");
+    function login() {
+      const inputName = document.getElementById("loginUsername").value.trim();
+      const warning = document.getElementById("loginWarning");
+
+      if (!/^[a-zA-Z0-9]{5,20}$/.test(inputName)) {
+        warning.innerText = "Nama harus huruf/angka (tanpa simbol), 5–20 karakter.";
+        warning.style.display = "block";
         return;
       }
 
-      let data = JSON.parse(localStorage.getItem("riwayatServis")) || [];
+      const username = "@" + inputName;
+      const localUser = localStorage.getItem("username");
 
-      data = data.filter(item =>
-        item.part && item.km && item.tanggal && item.namaMotor && item.jenisMotor
-      );
-
-      const entriesForThisMotor = data.filter(item =>
-        item.namaMotor === namaMotor && item.jenisMotor === jenisMotor
-      );
-
-      if (entriesForThisMotor.length >= 12) {
-        const indexToRemove = data.findIndex(item =>
-          item.namaMotor === namaMotor && item.jenisMotor === jenisMotor
-        );
-        if (indexToRemove !== -1) {
-          data.splice(indexToRemove, 1);
-        }
-      }
-
-      const entry = { part, km, tanggal, namaMotor, jenisMotor };
-      data.push(entry);
-      localStorage.setItem("riwayatServis", JSON.stringify(data));
-      Swal.fire("Tersimpan", "Riwayat servis berhasil disimpan.", "success");
-
-      function simpanServis() {
-  const part = document.getElementById('part').value.trim();
-  const kmValue = document.getElementById('kmServis').value;
-  const tanggal = document.getElementById('tglServis').value;
-  const namaMotor = document.getElementById('namaMotor').value.trim();
-  const jenisMotor = document.getElementById('jenisMotor').value;
-  const km = parseInt(kmValue);
-
-  if (!part || isNaN(km) || !tanggal || !namaMotor || !jenisMotor) {
-    Swal.fire("Lengkapi semua data!", "", "warning");
-    return;
-  }
-
-  const entry = { part, km, tanggal, namaMotor, jenisMotor };
-
-  // Simpan ke Firebase
-  const servisRef = db.ref('riwayatServis').push();
-  servisRef.set(entry)
-    .then(() => {
-      Swal.fire("Tersimpan", "Riwayat servis berhasil disimpan ke Firebase.", "success");
-
-      // Reset input
-      document.getElementById('part').value = '';
-      document.getElementById('kmServis').value = '';
-      document.getElementById('tglServis').value = '';
-
-      tampilRiwayat();
-    })
-    .catch(error => {
-      console.error("Gagal simpan:", error);
-      Swal.fire("Error", "Gagal menyimpan data ke Firebase.", "error");
-    });
-}
-function tampilRiwayat() {
-  if (!currentUsername) return;
-
-  const dbRef = firebase.database().ref(`users/${currentUsername}/riwayat`);
-  const list = document.getElementById('riwayatList');
-  list.innerHTML = "";
-
-  dbRef.once('value', snapshot => {
-    if (!snapshot.exists()) return;
-
-    const data = snapshot.val();
-    Object.entries(data).reverse().forEach(([key, item]) => {
-      const li = document.createElement('li');
-      li.className = 'list-group-item d-flex justify-content-between align-items-center';
-      li.innerHTML = `
-        <div>
-          <strong>${item.part.toUpperCase()}</strong> - KM ${item.km} - ${item.tanggal}<br>
-          <small>${item.namaMotor} (${item.jenisMotor})</small>
-        </div>
-        <button class="btn btn-sm btn-danger" onclick="hapusRiwayat('${key}')">Hapus</button>
-      `;
-      list.appendChild(li);
-    });
-  });
-}
-
-function hapusRiwayat(key) {
-  const dbRef = firebase.database().ref(`users/${currentUsername}/riwayat/${key}`);
-  dbRef.remove().then(tampilRiwayat);
-}
-
-    function cekStatus() {
-  const kmNow = parseInt(document.getElementById('kmNow').value);
-  const namaMotor = document.getElementById('namaMotor').value.trim();
-  const jenisMotor = document.getElementById('jenisMotor').value;
-
-  if (isNaN(kmNow) || !namaMotor || !jenisMotor) {
-    Swal.fire("Lengkapi semua data!", "", "warning");
-    return;
-  }
-
-  const statusContainer = document.getElementById('statusContainer');
-  statusContainer.innerHTML = `<h5>Motor: ${namaMotor} (${jenisMotor})</h5><hr>`;
-
-  db.ref('riwayatServis').once('value', (snapshot) => {
-    const allData = snapshot.val();
-    if (!allData) return;
-
-    const relevantData = Object.values(allData).filter(item =>
-      item.namaMotor === namaMotor && item.jenisMotor === jenisMotor
-    );
-
-    const partMap = {};
-
-    relevantData.forEach(item => {
-      const key = item.part.toLowerCase();
-      const existing = partMap[key];
-
-      if (!existing || new Date(item.tanggal) > new Date(existing.tanggal)) {
-        partMap[key] = item;
-      }
-    });
-
-    Object.keys(partMap).forEach(part => {
-      const item = partMap[part];
-      const interval = getInterval(item.part);
-      const kmBerikutnya = item.km + interval;
-      const sisa = kmBerikutnya - kmNow;
-
-      let status = '';
-      let kelas = '';
-      if (sisa <= 340) {
-        status = 'Saatnya servis';
-        kelas = 'status-merah';
-      } else if (sisa <= 680) {
-        status = 'Mendekati servis';
-        kelas = 'status-kuning';
-      } else {
-        status = 'Masih aman';
-        kelas = 'status-hijau';
-      }
-
-      const div = document.createElement('div');
-      div.className = `box-status ${kelas}`;
-      div.innerHTML = `
-        <strong>${item.part.toUpperCase()}</strong><br>
-        Terakhir di KM ${item.km}, berikutnya di KM ${kmBerikutnya}<br>
-        Status: <strong>${status}</strong>
-      `;
-      statusContainer.appendChild(div);
-    });
-  });
-}
-
-    window.addEventListener("load", tampilRiwayat);
-  </script>
-    <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const storedUsername = localStorage.getItem('username');
-  if (storedUsername) {
-    currentUsername = storedUsername;
-    showMainUI();
-  } else {
-    showLoginPopup();
-  }
-});
-
-function showMainUI() {
-  document.getElementById('loginPopup').style.display = 'none';
-  document.getElementById('userInfo').style.display = 'flex';
-  document.getElementById('userGreeting').textContent = `Hai, ${currentUsername}`;
-  tampilRiwayat();
-}
-
-function showLoginPopup() {
-  document.getElementById('loginPopup').style.display = 'flex';
-  document.getElementById('userInfo').style.display = 'none';
-}
-  </script>
-  <script>
-let currentUsername = "";
-
-// Pastikan fungsi login sudah ada sebelum digunakan
-function login() {
-  const inputName = document.getElementById("loginUsername").value.trim();
-  const warning = document.getElementById("loginWarning");
-
-  // Validasi nama (huruf dan angka, 5-20 karakter)
-  if (!/^[a-zA-Z0-9]{5,20}$/.test(inputName)) {
-    warning.innerText = "Nama harus huruf/angka (tanpa simbol), 5–20 karakter.";
-    warning.style.display = "block";
-    return;
-  }
-
-  const username = "@" + inputName;
-  const localUser = localStorage.getItem("username");
-
-  // Cek Firebase apakah nama sudah ada
-  firebase.database().ref("users").orderByChild("username").equalTo(username).once("value")
-    .then(snapshot => {
-      if (snapshot.exists()) {
-        if (localUser === username) {
-          lanjutkanLogin(username);
-        } else {
-          warning.innerText = "Nama sudah digunakan. Silakan pilih nama lain.";
-          warning.style.display = "block";
-        }
-      } else {
-        firebase.database().ref("users").push({ username });
-        localStorage.setItem("username", username);
-        lanjutkanLogin(username);
-      }
-    });
-}
-
-// Fungsi lanjutkanLogin dan lainnya di sini
-
-function lanjutkanLogin(username) {
-  document.getElementById("loginWarning").style.display = "none";
-  Swal.fire("Berhasil", `Login sebagai ${username}`, "success");
-  document.getElementById("loginPopup").style.display = "none";
-}
-
-  warning.style.display = 'none';
-  currentUsername = username;
-  localStorage.setItem('username', username);
-  showMainUI();
-}
-
-function logout() {
-  Swal.fire({
-    title: 'Nek metu metu, nek gak gak!',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Iyo',
-    cancelButtonText: 'Gak'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      localStorage.removeItem('username');
-      currentUsername = "";
-      showLoginPopup();
+      firebase.database().ref("users").orderByChild("username").equalTo(username).once("value")
+        .then(snapshot => {
+          if (snapshot.exists()) {
+            if (localUser === username) {
+              lanjutkanLogin(username);
+            } else {
+              warning.innerText = "Nama sudah digunakan. Silakan pilih nama lain.";
+              warning.style.display = "block";
+            }
+          } else {
+            firebase.database().ref("users").push({ username });
+            localStorage.setItem("username", username);
+            lanjutkanLogin(username);
+          }
+        });
     }
-  });
-}
-function showMainUI() {
-  document.getElementById('loginPopup').style.display = 'none';
-  document.getElementById('userInfo').style.display = 'flex';
-  document.querySelector('.container').style.display = 'block';
-  document.getElementById('userGreeting').textContent = `Halo, ${currentUsername}`;
-}
 
-function showLoginPopup() {
-  document.getElementById('loginPopup').style.display = 'flex';
-  document.getElementById('userInfo').style.display = 'none';
-  document.querySelector('.container').style.display = 'none';
-}
+    function lanjutkanLogin(username) {
+      document.getElementById("loginWarning").style.display = "none";
+      Swal.fire("Berhasil", `Login sebagai ${username}`, "success");
+      document.getElementById("loginPopup").style.display = "none";
+      currentUsername = username;
+      showMainUI();
+    }
 
-// Saat load halaman
-window.onload = function() {
-  const storedUser = localStorage.getItem('username');
-  if (storedUser) {
-    currentUsername = storedUser;
-    showMainUI();
-  } else {
-    showLoginPopup();
-  }
-};
-	  .catch((error) => {
-  const errorMessage = error.message;
-  alert("Login gagal: " + errorMessage);
-});
+    function logout() {
+      Swal.fire({
+        title: 'Nek metu metu, nek gak gak!',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Iyo',
+        cancelButtonText: 'Gak'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.removeItem('username');
+          currentUsername = "";
+          showLoginPopup();
+        }
+      });
+    }
 
-</script>
+    function showMainUI() {
+      document.getElementById('loginPopup').style.display = 'none';
+      document.getElementById('userInfo').style.display = 'flex';
+      document.getElementById('userGreeting').textContent = `Halo, ${currentUsername}`;
+    }
+
+    function showLoginPopup() {
+      document.getElementById('loginPopup').style.display = 'flex';
+      document.getElementById('userInfo').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
