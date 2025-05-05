@@ -650,6 +650,11 @@ window.onload = function() {
     showLoginPopup();
   }
 };
+	  .catch((error) => {
+  const errorMessage = error.message;
+  alert("Login gagal: " + errorMessage);
+});
+
 </script>
 </body>
 </html>
