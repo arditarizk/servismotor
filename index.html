@@ -566,11 +566,12 @@ function showLoginPopup() {
   <script>
 let currentUsername = "";
 
+// Pastikan fungsi login sudah ada sebelum digunakan
 function login() {
   const inputName = document.getElementById("loginUsername").value.trim();
   const warning = document.getElementById("loginWarning");
 
-  // Validasi input (hanya huruf dan angka, panjang 6–21 termasuk @)
+  // Validasi nama (huruf dan angka, 5-20 karakter)
   if (!/^[a-zA-Z0-9]{5,20}$/.test(inputName)) {
     warning.innerText = "Nama harus huruf/angka (tanpa simbol), 5–20 karakter.";
     warning.style.display = "block";
@@ -580,11 +581,10 @@ function login() {
   const username = "@" + inputName;
   const localUser = localStorage.getItem("username");
 
-  // Cek ke Firebase apakah nama sudah dipakai
+  // Cek Firebase apakah nama sudah ada
   firebase.database().ref("users").orderByChild("username").equalTo(username).once("value")
     .then(snapshot => {
       if (snapshot.exists()) {
-        // Kalau user lama (sudah login sebelumnya), boleh lanjut
         if (localUser === username) {
           lanjutkanLogin(username);
         } else {
@@ -592,13 +592,14 @@ function login() {
           warning.style.display = "block";
         }
       } else {
-        // Simpan ke Firebase dan localStorage
         firebase.database().ref("users").push({ username });
         localStorage.setItem("username", username);
         lanjutkanLogin(username);
       }
     });
 }
+
+// Fungsi lanjutkanLogin dan lainnya di sini
 
 function lanjutkanLogin(username) {
   document.getElementById("loginWarning").style.display = "none";
